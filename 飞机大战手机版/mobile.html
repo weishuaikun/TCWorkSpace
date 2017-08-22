@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<title>mobile</title>
+		<meta name="description" content="" />
+		<meta name="author" content="Administrator" />
+
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+	</head>
+
+	<body>
+		<canvas id="canvas" style="border:3px solid red;" width="480" height="650">
+				不支持画板对象
+			</canvas>
+		
+		<h2 align="center">请调整浏览器窗口大小</h2>
+		<hr>
+		<form action="#" method="get" name="form1" id="form1">
+			<!-- 显示浏览器窗口的实际尺寸 -->
+			浏览器窗口 的 实际高度:
+			<input type="text" name="availHeight" size="4">
+			<br>
+			浏览器窗口 的 实际宽度:
+			<input type="text" name="availWidth" size="4">
+			<br>
+		</form>
+		<script>
+		window.onload = function(){
+			var canvas = document.getElementById("canvas");
+			canvas.style.width = document.body.scrollWidth;
+			canvas.style.height = document.body.scrollHeight;
+		}
+			
+		</script>
+		<script type="text/javascript">
+			
+			var winWidth = 0;
+			var winHeight = 0;
+			function findDimensions() //函数：获取尺寸
+			{
+			//获取窗口宽度
+			if (window.innerWidth)
+			winWidth = window.innerWidth;
+			else if ((document.body) && (document.body.clientWidth))
+			winWidth = document.body.clientWidth;
+			//获取窗口高度
+			if (window.innerHeight)
+			winHeight = window.innerHeight;
+			else if ((document.body) && (document.body.clientHeight))
+			winHeight = document.body.clientHeight;
+			//通过深入Document内部对body进行检测，获取窗口大小
+			if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
+			{
+			winHeight = document.documentElement.clientHeight;
+			winWidth = document.documentElement.clientWidth;
+			}
+			//结果输出至两个文本框
+			document.form1.availHeight.value= winHeight;
+			document.form1.availWidth.value= winWidth;
+			}
+			findDimensions();
+			//调用函数，获取数值
+			window.onresize=findDimensions;
+			//–>
+		</script>
+		
+		<script>
+			console.log("网页可见区域宽："+document.body.clientWidth+"\n"+
+"网页可见区域高："+document.body.clientHeight+"\n"+
+"网页可见区域宽："+document.body.offsetWidth +"(包括边线的宽)"+"\n"+
+"网页可见区域高："+document.body.offsetHeight+ "(包括边线的宽)"+"\n"+
+"网页正文全文宽："+document.body.scrollWidth+"\n"+
+"网页正文全文高："+document.body.scrollHeight+"\n"+
+"网页被卷去的高："+document.body.scrollTop+"\n"+
+"网页被卷去的左："+document.body.scrollLeft+"\n"+
+"网页正文部分上："+window.screenTop+"\n"+
+"网页正文部分左："+window.screenLeft+"\n"+
+"屏幕分辨率的高："+window.screen.height+"\n"+
+"屏幕分辨率的宽："+window.screen.width+"\n"+
+"屏幕可用工作区高度："+window.screen.availHeight+"\n"+
+"屏幕可用工作区宽度："+window.screen.availWidth)+"\n"
+		</script>
+	</body>
+</html>
