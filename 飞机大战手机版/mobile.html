@@ -87,5 +87,20 @@
 "屏幕可用工作区高度："+window.screen.availHeight+"\n"+
 "屏幕可用工作区宽度："+window.screen.availWidth)+"\n"
 		</script>
+		
+		<script>
+			//监听手机触摸事件
+			document.addEventListener("touchmove", handleTouchEvent, false);
+
+			function handleTouchEvent(e) {
+				e.preventDefault();
+				if (event.type == "touchmove") {
+					//console.log("<br>Touch moved (" + event.changedTouches[0].clientX + "," + event.changedTouches[0].clientY + ")");
+					//var mpoint = getPointOnCanvas(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+					console.log("手机宽高:"+document.body.scrollWidth+" , "+document.body.scrollHeight);
+					console.log("手指坐标:"+e.changedTouches[0].clientX+" , "+e.changedTouches[0].clientY);
+				}
+			}
+		</script>
 	</body>
 </html>

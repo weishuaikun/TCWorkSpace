@@ -3,15 +3,45 @@
 	<head>
 		<meta charset="utf-8">
 		<title>飞机大战</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		 <style>
+            html,body{
+                height:100%;
+                width: 100%;
+                overflow:hidden;
+                margin: 0;
+                padding: 0;
+            }
+            #canvas{
+                background-color: blue;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
 	</head>
 
 	<body>
-		<div id="stage" style="margin: 0 auto; width: 480px; height: 650px; text-align: center; vertical-align: middle" >
-			<canvas id="canvas" style="border:0px solid red;" width="480" height="650">
-				不支持画板对象
-			</canvas>
-		</div>
+		<!-- <div id="stage" style="margin: 0 auto; width: 480px; height: 650px; text-align: center; vertical-align: middle" >
+		<canvas id="canvas" style="border:0px solid red;" width="480" height="650">
+		不支持画板对象
+		</canvas>
+		</div> -->
+		
+		
+
+		<canvas id="canvas" width="480" height="650" style="border:0px solid red;" >
+			不支持画板对象
+		</canvas>
+
 		<script>
+		/*
+		 * 适配思路：
+		 * 获取手机实际宽高，
+		 * 然后计算触摸位置的相对位置，
+		 * 最后将相对位置换算到画布坐标中
+		 */
 			var canvas = document.getElementById('canvas');
 			var ctx = canvas.getContext('2d');
 
@@ -169,10 +199,10 @@
 						deleteComponent();
 						break;
 					// case PAUSE:
-						// paintComponent(ctx);
-						// sky.step();
-						// ctx.drawImage(pause, 0, 0);
-						// break;
+					// paintComponent(ctx);
+					// sky.step();
+					// ctx.drawImage(pause, 0, 0);
+					// break;
 					case GAME_OVER:
 						paintComponent(ctx);
 						sky.step();
@@ -331,39 +361,49 @@
 					}
 				}
 			}
-
+			
+			
+			//手机宽度和高度
+			var deviceWidth = document.body.scrollWidth;
+			var deviceHeight = document.body.scrollHeight;
+			var canvasWidth = 480;
+			var canvasHeight = 650;
 			function getPointOnCanvas(x, y) {
-				var bbox = canvas.getBoundingClientRect();
+				// var bbox = canvas.getBoundingClientRect();
+				// return {
+					// x : x - bbox.left,
+					// y : y - bbox.top
+				// };
+				//计算相对位置并换算
+				console.log(x/deviceWidth+" , "+y/deviceHeight);
 				return {
-					x : x - bbox.left,
-					y : y - bbox.top
+					
+					x:canvasWidth*(x/deviceWidth),
+					y:canvasHeight*(y/deviceHeight)
 				};
 			}
 
 			//监听鼠标移动事件
-			canvas.onmousemove = function(e) {
-				if (state == RUNNING) {
-					var mpoint = getPointOnCanvas(e.x, e.y);
-					hero.x = mpoint.x - hero.width / 2;
-					hero.y = mpoint.y - hero.height / 2;
-				}
-			}
-			
+			// canvas.onmousemove = function(e) {
+				// if (state == RUNNING) {
+					// var mpoint = getPointOnCanvas(e.x, e.y);
+					// hero.x = mpoint.x - hero.width / 2;
+					// hero.y = mpoint.y - hero.height / 2;
+				// }
+			// }
 			//监听手机触摸事件
 			document.addEventListener("touchmove", handleTouchEvent, false);
 
 			function handleTouchEvent(e) {
 				e.preventDefault();
-				if(event.type == "touchmove"){
+				if (event.type == "touchmove") {
 					//console.log("<br>Touch moved (" + event.changedTouches[0].clientX + "," + event.changedTouches[0].clientY + ")");
 					var mpoint = getPointOnCanvas(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 					hero.x = mpoint.x - hero.width / 2;
 					hero.y = mpoint.y - hero.height / 2;
-					if (state == RUNNING) {
-				}
 				}
 			}
-			
+
 			function FlyingObject(x, y, width, height, life, frames, baseFrameCount) {
 				this.x = x;
 				this.y = y;
