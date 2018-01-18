@@ -12,27 +12,48 @@
 			</canvas>
 		</div>
 		<script>
-			classes1 = {
-				name : ["徐忘忧", "于霄雯", "顾仁宇", "岂麟童", "魏弈铭", "信朋宇", "朱涵宇", "李严","杨博艺"],
+			classes = [{
+				className : "FridayNight0901",
+				name : ["徐忘忧", "于霄雯", "顾仁宇", "岂麟童", "魏弈铭", "信朋宇", "朱涵宇", "李严", "杨博艺"],
 				age : [],
 				gender : []
-			};
+			}, {
+				className : "SatAM0903",
+				name : ["李则融", "赵梓彤", "于忻可", "杨雨泽", "叶一灿"],
+				age : [],
+				gender : []
+			}];
 
+			//控制器
+			var Controller = {
+				start : function() {
+					console.log("----请选择您要使用的班级----\n");
+					var str = "";
+					for (var i = 0; i < classes.length; i++) {
+						var obj = classes[i];
+						str += (i + "：" + obj.className + "\n");
+					}
+					var index = prompt("请输入您选择班级的编号\n" + str);
+					console.log("您选择的班级是" + classes[index].className + "\n");
+					//创建班级对象
+					wj0901 = new Class();
+					//初始化班级对象
+					wj0901.init(classes[index]);
+					wj0901.show();
+				}
+			};
 			var wj0901;
 			window.onload = function() {
-				//创建班级对象
-				wj0901 = new Class();
-				//初始化班级对象
-				wj0901.init(classes1);
-
-				wj0901.show();
+				Controller.start();
 			}
 			//班级
 			function Class() {
-				this.name = "FridayNight0901";
+				this.name = "className";
 				this.stuList = [];
-				this.storage;
+				this.storage
 				this.init = function(obj) {
+					//初始化班级名称
+					this.name = obj.className;
 					//初始化数据库
 					this.storage = new Storage(this.name);
 					//初始化学生数组
