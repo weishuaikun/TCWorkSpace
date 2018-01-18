@@ -467,7 +467,7 @@
 				this.move = function() {
 
 				}
-				this.reload = function(number) {
+				this.addPower = function(number) {
 					this.power += number;
 					if (this.power > 0) {
 						this.multipleFire = true;
@@ -651,7 +651,7 @@
 				for (var i = 0; i < ufo.length; i++) {
 					if (ufo[i].hit(hero)) {
 						ufo[i].bang();
-						hero.reload(5);
+						hero.addPower(5);
 					}
 				}
 				//检测英雄机是否和盾牌发生碰撞
