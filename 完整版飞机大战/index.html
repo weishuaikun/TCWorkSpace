@@ -467,6 +467,12 @@
 				this.move = function() {
 
 				}
+				this.reload = function(number) {
+					this.power += number;
+					if (this.power > 0) {
+						this.multipleFire = true;
+					}
+				}
 			}
 
 			function SuperState(hero, img, baseFrameCount, width, height, superTime) {
@@ -621,13 +627,6 @@
 				this.y = -this.height;
 			}
 
-			function reload(number) {
-				hero.power += number;
-				if (hero.power > 0) {
-					hero.multipleFire = true;
-				}
-			}
-
 			function checkHit() {
 				for (var i = 0; i < enemies.length; i++) {
 					var enemy = enemies[i];
@@ -652,7 +651,7 @@
 				for (var i = 0; i < ufo.length; i++) {
 					if (ufo[i].hit(hero)) {
 						ufo[i].bang();
-						reload(5);
+						hero.reload(5);
 					}
 				}
 				//检测英雄机是否和盾牌发生碰撞
