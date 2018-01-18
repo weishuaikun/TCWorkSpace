@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>积分管理程序</title>
+	</head>
+
+	<body>
+		<div id="stage" style="margin: 0 auto; width: 480px; height: 650px; text-align: center; vertical-align: middle" >
+			<canvas id="canvas" style="border:2px solid red;" width="480" height="650">
+				不支持画板对象
+			</canvas>
+		</div>
+		<script>
+			classes1 = {
+				name : ["徐忘忧", "于霄雯", "顾仁宇", "岂麟童", "魏弈铭", "信朋宇", "朱涵宇", "李严","杨博艺"],
+				age : [],
+				gender : []
+			};
+
+			var wj0901;
+			window.onload = function() {
+				//创建班级对象
+				wj0901 = new Class();
+				//初始化班级对象
+				wj0901.init(classes1);
+
+				wj0901.show();
+			}
+			//班级
+			function Class() {
+				this.name = "FridayNight0901";
+				this.stuList = [];
+				this.storage;
+				this.init = function(obj) {
+					//初始化数据库
+					this.storage = new Storage(this.name);
+					//初始化学生数组
+					for (var i = 0; i < obj.name.length; i++) {
+						var stu = new Student(obj.name[i], obj.age[i], obj.gender[i]);
+						//从数据库读取分数
+						var score = this.storage.get(stu.name);
+						if (score == null || score == NaN) {
+							score = 0;
+						}
+						stu.accumulation = score;
+						this.stuList[i] = stu;
+					}
+
+				}
+				//展示每位同学的积分情况
+				this.show = function() {
+					for (var i = 0; i < this.stuList.length; i++) {
+						this.stuList[i].toString();
+					}
+				}
+				this.findByName = function(name) {
+					for (var i = 0; i < this.stuList.length; i++) {
+						if (this.stuList[i].name == name) {
+							return this.stuList[i];
+						}
+					}
+
+				}
+				//为指定同学加指定分数
+				this.addScore = function(name, score) {
+					//js中传递的都是对象的引用，所以可以直接这样写。
+					var stu = this.findByName(name);
+					stu.bonus(score);
+					//持久化到数据库中
+					this.storage.save(stu.name, stu.accumulation);
+				}
+				//清空某位同学的积分
+				this.reset = function(name) {
+					var stu = this.findByName(name);
+					stu.accumulation = 0;
+					this.storage.save(stu.name, stu.accumulation);
+				}
+				//清空所有同学的积分
+				this.resetAll = function() {
+					var res = confirm("你确定要清空所有积分吗?");
+					if (res == true) {
+						for (var i = 0; i < this.stuList.length; i++) {
+							var stu = this.stuList[i];
+							this.reset(stu.name);
+						}
+					} else {
+						console.log("已取消清空操作!");
+					}
+					this.show();
+				}
+				//每位同学都奖励指定的积分
+				this.bonus = function(num) {
+					for (var i = 0; i < this.stuList.length; i++) {
+						var stu = this.stuList[i];
+						this.addScore(stu.name, num);
+					}
+					this.show();
+				}
+			}
+
+			//定义学生构造方法
+			function Student(name, age, gender) {
+				//记录当前积分
+				this.accumulation = 0;
+				this.name = name;
+				this.age = age;
+				this.gender = gender;
+				//性别
+				this.sayHello = function() {
+					alert("大家好，我是" + this.name + "，今年" + this.age + "岁");
+				}
+				//加分方法
+				this.bonus = function(num) {
+					this.toString();
+					this.accumulation = parseInt(this.accumulation) + num;
+					this.toString();
+					//this.accumulation = this.accumulation + num;
+				}
+				this.toString = function() {
+					console.log(this.name + ":" + this.accumulation + "\n");
+				}
+			}
+
+			//持久化到数据库中
+			function Storage(className) {
+				this.storage = localStorage;
+				this.name = className;
+				//将键值对保存到数据库中
+				this.save = function(key, value) {
+					key = this.name + key;
+					this.storage.setItem(key, value);
+					console.log("数据库保存结果：" + key + ":" + value);
+				}
+				//根据名字从数据库中取数据
+				this.get = function(key) {
+					key = this.name + key
+					return this.storage.getItem(key);
+				}
+			}
+
+		</script>
+	</body>
+</html>
+
